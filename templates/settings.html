@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Settings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-video me-2"></i>Video Analysis System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analyze"><i class="fas fa-upload me-1"></i>Analyze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/videos"><i class="fas fa-film me-1"></i>My Videos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/realtime"><i class="fas fa-camera me-1"></i>Real-time</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/settings"><i class="fas fa-cog me-1"></i>Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mb-4"><i class="fas fa-cog me-2"></i>Analysis Settings</h1>
+        
+        <div id="status-message" class="status-message"></div>
+        
+        <!-- Hidden div to pass JSON data to JS -->
+        <div id="settings-data"
+             data-realtime-classes='{{ config.realtime.include_classes|tojson }}'
+             data-video-classes='{{ config.video.include_classes|tojson }}'
+             style="display:none"></div>
+        
+        <div class="row">
+            <!-- Real-time Analysis Settings -->
+            <div class="col-md-6">
+                <div class="settings-container">
+                    <h2 class="mb-4">Real-time Analysis</h2>
+                    <form id="realtime-settings-form">
+                        <div class="settings-group">
+                            <h5><i class="fas fa-sliders-h me-2"></i>Detection Parameters</h5>
+                            
+                            <div class="mb-3">
+                                <label for="realtime-confidence" class="form-label">Confidence Threshold</label>
+                                <div class="input-group">
+                                    <input type="range" class="form-range" min="0.1" max="0.9" step="0.05" 
+                                           id="realtime-confidence" value="{{ config.realtime.confidence }}">
+                                    <span class="ms-2" id="realtime-confidence-value">{{ config.realtime.confidence }}</span>
+                                </div>
+                                <small class="text-muted">Higher values reduce false positives but may miss some objects.</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="realtime-save-interval" class="form-label">Save Interval</label>
+                                <input type="number" class="form-control" id="realtime-save-interval" 
+                                       value="{{ config.realtime.save_interval }}" min="1" max="30">
+                                <small class="text-muted">Save every Nth frame with detected objects.</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="realtime-frame-rate" class="form-label">Frame Rate (delay in seconds)</label>
+                                <input type="number" class="form-control" id="realtime-frame-rate" 
+                                       value="{{ config.realtime.frame_rate }}" min="0.01" max="1" step="0.01">
+                                <small class="text-muted">Lower values = faster processing (may impact performance).</small>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <h5><i class="fas fa-filter me-2"></i>Object Filtering</h5>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Include Object Classes</label>
+                                <div class="object-classes" id="realtime-classes">
+                                    {% for obj_class in config.realtime.include_classes %}
+                                    <div class="object-class">
+                                        {{ obj_class }}
+                                        <button type="button" class="btn-close ms-2" aria-label="Remove" 
+                                                onclick="removeObjectClass('realtime', '{{ obj_class }}')"></button>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="tag-input">
+                                    <input type="text" class="form-control" id="realtime-new-class" 
+                                           placeholder="Add object class (e.g., dog, cat)">
+                                    <button type="button" class="btn btn-primary" 
+                                            onclick="addObjectClass('realtime')">Add</button>
+                                </div>
+                                <small class="text-muted">Only detect these object types. Common classes: person, car, truck, bicycle, motorcycle, bus, dog, cat</small>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary" onclick="saveSettings('realtime')">
+                            <i class="fas fa-save me-1"></i>Save Real-time Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Video Upload Analysis Settings -->
+            <div class="col-md-6">
+                <div class="settings-container">
+                    <h2 class="mb-4">Video Analysis</h2>
+                    <form id="video-settings-form">
+                        <div class="settings-group">
+                            <h5><i class="fas fa-sliders-h me-2"></i>Detection Parameters</h5>
+                            
+                            <div class="mb-3">
+                                <label for="video-confidence" class="form-label">Confidence Threshold</label>
+                                <div class="input-group">
+                                    <input type="range" class="form-range" min="0.1" max="0.9" step="0.05" 
+                                           id="video-confidence" value="{{ config.video.confidence }}">
+                                    <span class="ms-2" id="video-confidence-value">{{ config.video.confidence }}</span>
+                                </div>
+                                <small class="text-muted">Higher values reduce false positives but may miss some objects.</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="video-frame-interval" class="form-label">Frame Interval</label>
+                                <input type="number" class="form-control" id="video-frame-interval" 
+                                       value="{{ config.video.frame_interval }}" min="1" max="30">
+                                <small class="text-muted">Process every Nth frame from the video.</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="video-min-objects" class="form-label">Minimum Objects</label>
+                                <input type="number" class="form-control" id="video-min-objects" 
+                                       value="{{ config.video.min_objects }}" min="1" max="10">
+                                <small class="text-muted">Minimum number of objects required to save a frame.</small>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <h5><i class="fas fa-filter me-2"></i>Object Filtering</h5>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Include Object Classes</label>
+                                <div class="object-classes" id="video-classes">
+                                    {% for obj_class in config.video.include_classes %}
+                                    <div class="object-class">
+                                        {{ obj_class }}
+                                        <button type="button" class="btn-close ms-2" aria-label="Remove" 
+                                                onclick="removeObjectClass('video', '{{ obj_class }}')"></button>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="tag-input">
+                                    <input type="text" class="form-control" id="video-new-class" 
+                                           placeholder="Add object class (e.g., dog, cat)">
+                                    <button type="button" class="btn btn-primary" 
+                                            onclick="addObjectClass('video')">Add</button>
+                                </div>
+                                <small class="text-muted">Only detect these object types. Common classes: person, car, truck, bicycle, motorcycle, bus, dog, cat</small>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary" onclick="saveSettings('video')">
+                            <i class="fas fa-save me-1"></i>Save Video Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+</body>
+</html>

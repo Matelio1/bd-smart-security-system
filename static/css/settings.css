@@ -1,0 +1,50 @@
+.settings-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+.settings-group {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+.settings-group:last-child {
+    border-bottom: none;
+}
+.form-label {
+    font-weight: 600;
+}
+.object-classes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+.object-class {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+.tag-input {
+    margin-top: 10px;
+    display: flex;
+}
+.tag-input input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.tag-input button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.status-message {
+    display: none;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}

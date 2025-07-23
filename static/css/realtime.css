@@ -1,0 +1,139 @@
+    body { padding-top: 20px; background-color: #f8f9fa; }
+        .card { box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .navbar { margin-bottom: 20px; }
+        .frame-gallery {
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px; 
+            margin-top: 20px;
+        }
+        .frame-item { 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: transform 0.2s;
+        }
+        .frame-item:hover { transform: scale(1.02); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .frame-item img { width: 100%; height: 150px; object-fit: cover; }
+        .frame-info { padding: 10px; font-size: 0.8rem; background-color: #f8f9fa; }
+        .loading { text-align: center; padding: 20px; }
+        .frame-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 1050; overflow: auto; justify-content: center; align-items: center; }
+        .frame-modal-content { background-color: white; margin: auto; padding: 20px; border-radius: 8px; max-width: 90%; max-height: 90%; position: relative; }
+        .frame-modal-close { position: absolute; top: 10px; right: 10px; font-size: 1.5rem; font-weight: bold; cursor: pointer; }
+        .frame-modal-image { width: 100%; max-height: 80vh; object-fit: contain; }
+        
+        /* Updated styles for camera grid */
+        .camera-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 0;
+        }
+        .camera-feed {
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #000;
+            aspect-ratio: 16/9;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.15s, border-color 0.15s;
+        }
+        .camera-feed:hover {
+            transform: scale(1.02);
+            border-color: #007bff;
+        }
+        .camera-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s;
+        }
+        .camera-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0,0,0,0.6);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            z-index: 5;
+        }
+        .camera-controls {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            z-index: 5;
+        }
+        .camera-controls button {
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(0,0,0,0.6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .camera-controls button:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+        
+        /* Stream modal styles */
+        #stream-modal .modal-dialog {
+            max-width: 90%;
+            max-height: 90vh;
+        }
+        #stream-modal-image {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+        .error-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 10;
+            display: none;
+        }
+        
+        /* Camera badge styles */
+        .badge.bg-primary {
+            font-size: 0.75rem;
+            padding: 0.25em 0.5em;
+        }
+        
+        /* Make the frame gallery more responsive */
+        @media (min-width: 992px) {
+            .frame-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+        
+        @media (max-width: 991px) {
+            .frame-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+        
+        /* More prominent frame hover effect */
+        .frame-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            border-color: #0d6efd;
+        }

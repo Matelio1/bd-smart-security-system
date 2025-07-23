@@ -1,0 +1,50 @@
+# Virtual environment files
+Scripts/
+bin/
+lib/
+include/
+pyvenv.cfg
+.env
+.venv/
+env/
+
+# yolo files
+yolov5/
+
+# video and frame files
+static/videos/*.mp4
+static/videos/*.avi
+static/videos/*.mov
+static/output/*
+
+# yolo models
+*.pt
+*.weights
+*.onnx
+*.engine
+
+# Database files
+*.db
+*.sqlite
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.pyc
+*.pyo
+
+# Logs and instance folder
+*.log
+instance/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/

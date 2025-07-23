@@ -1,0 +1,51 @@
+/* Common styles for all pages */
+body {
+    padding-top: 20px;
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    margin-bottom: 30px;
+    background-color: #343a40 !important;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: bold;
+}
+
+.nav-link {
+    color: rgba(255,255,255,.8) !important;
+}
+
+.nav-link:hover {
+    color: white !important;
+}
+
+.nav-link.active {
+    color: white !important;
+    font-weight: bold;
+    background-color: rgba(255,255,255,.1);
+    border-radius: 4px;
+}
+
+.container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.page-title {
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Form styling */
+.form-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin: 40px auto;
+    max-width: 600px;
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyze Video</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/analyze.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-video me-2"></i>Video Analysis System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/analyze"><i class="fas fa-upload me-1"></i>Analyze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/videos"><i class="fas fa-film me-1"></i>My Videos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/realtime"><i class="fas fa-camera me-1"></i>Real-time</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/settings"><i class="fas fa-cog me-1"></i>Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="analysis-container">
+            <h1 class="mb-4"><i class="fas fa-film me-2"></i>Video Analysis</h1>
+            <p class="lead">Upload a video to analyze its content using YOLO object detection.</p>
+            
+            <div class="upload-zone" id="uploadZone">
+                <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                <h4>Drag & Drop Video Here</h4>
+                <p>or click to browse</p>
+                <input type="file" id="videoUpload" accept="video/*">
+            </div>
+            
+            <div class="preview-container">
+                <video id="videoPreview" controls></video>
+            </div>
+            
+            <button id="analyzeBtn" class="btn btn-primary btn-lg w-100" disabled>
+                <i class="fas fa-search me-2"></i>Analyze Video
+            </button>
+            
+            <div class="progress-section" id="progressSection">
+                <h4 class="mb-3">Analysis Progress</h4>
+                <div class="progress mb-3" style="height: 25px;">
+                    <div id="analysisProgress" class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" style="width: 0%;">0%</div>
+                </div>
+                <div id="statusMessage" class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>Preparing for analysis...
+                </div>
+            </div>
+            
+            <div class="results-section" id="resultsSection">
+                <h4 class="mb-3">Analysis Results</h4>
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-check-circle me-2"></i>Analysis Complete
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Summary</h5>
+                        <p id="analysisSummary"></p>
+                        
+                        <h5 class="card-title mt-3">Detected Objects</h5>
+                        <div id="detectedObjects"></div>
+                        
+                        <div class="mt-4">
+                            <h5>Selected Frames with Activity</h5>
+                            <div class="frame-gallery" id="frameGallery">
+                                <!-- Frames will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <a href="/videos" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-film me-1"></i>View All Videos
+                    </a>
+                    <button id="newAnalysisBtn" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>New Analysis
+                    </button>
+                </div>
+            </div>
+            
+            <div id="errorSection" class="alert alert-danger mt-3" style="display: none;">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span id="errorMessage"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap and other scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/analyze.js') }}"></script>
+</body>
+</html>
